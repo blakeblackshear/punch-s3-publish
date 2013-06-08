@@ -59,9 +59,16 @@ module.exports =
     file_stream.on 'end', ->
       complete()
 
+  loadAwsCredentials: ->
+    if @publishOptions.credentials.accessKeyId? and @publishOptions.credentials.secretAccessKey? and @publishOptions.credentials.region?
+      AWS.config.update @publishOptions.credentials
+    else if @publishOptions.credentials.file?
+      AWS.config.loadFromPath @publishOptions.credentials.file
+
   publish: (supplied_config, last_published_date, callback) ->
     console.log "Publishing to S3..."
     @publishOptions = @retrieveOptions(supplied_config)
-    @client = new AWS.S3(@publishOptions.credentials)
+    @loadAwsCredentials()
+    @client = new AWS.S3()
     @lastPublishedDate = last_published_date
     @fetchAndCopyFiles supplied_config, callback
