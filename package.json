@@ -1,0 +1,24 @@
+{
+  "name": "punch-s3-publish",
+  "version": "0.0.1",
+  "description": "A punch s3 publisher that supports more options",
+  "main": "lib/s3.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blakeblackshear/punch-s3-publish.git"
+  },
+  "keywords": [
+    "s3",
+    "punch",
+    "publish"
+  ],
+  "author": "blake blackshear",
+  "license": "BSD",
+  "devDependencies": {
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt": "~0.4.1"
+  }
+}
