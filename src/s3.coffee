@@ -26,7 +26,7 @@ module.exports =
       throw error  if error
       #remote_path = remote_path.replace(/\\/g, "/")
 
-      zlib.gzip buf, (_, zipped) =>
+      zlib.gzip buf, (err, zipped) =>
         options = 
           Body: zipped
           Key: remote_path
