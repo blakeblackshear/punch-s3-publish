@@ -25,6 +25,7 @@
     "aws-sdk": "~1.2.0",
     "mime": "~1.2.9",
     "fstream": "~0.1.18",
-    "underscore": "~1.4.4"
+    "underscore": "~1.4.4",
+    "zlib": "~1.0.5"
   }
 }

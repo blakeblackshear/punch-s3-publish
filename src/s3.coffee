@@ -4,6 +4,7 @@ _ = require 'underscore'
 path = require 'path'
 fs = require 'fs'
 mime = require 'mime'
+zlib = require 'zlib'
 
 module.exports =
   lastPublishedDate: null
@@ -25,22 +26,24 @@ module.exports =
       throw error  if error
       #remote_path = remote_path.replace(/\\/g, "/")
 
-      options = 
-        Body: buf
-        Key: remote_path
-        ContentLength: buf.length
-        ContentType: mime.lookup(local_path)
+      zlib.gzip buf, (_, zipped) ->
+        options = 
+          Body: zipped
+          Key: remote_path
+          ContentLength: zipped.length
+          ContentType: mime.lookup(local_path)
+          ContentEncoding: 'gzip'
 
-      _.extend options, @publishOptions.s3_options
+        _.extend options, @publishOptions.s3_options
 
-      if options.ContentType is 'text/html' and @publishOptions.remove_html_extensions
-        ext = path.extname options.Key
-        options.Key = options.Key.replace ext, ''
+        if options.ContentType is 'text/html' and @publishOptions.remove_html_extensions
+          ext = path.extname options.Key
+          options.Key = options.Key.replace ext, ''
 
-      console.log "Saving #{local_path}"
-      @client.putObject options, (err, data) ->
-        throw err if err?
-        callback()
+        console.log "Saving #{local_path}"
+        @client.putObject options, (err, data) ->
+          throw err if err?
+          callback()
 
   fetchAndCopyFiles: (supplied_config, complete) ->
     output_dir = (supplied_config and supplied_config.output_dir) or ''
