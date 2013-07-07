@@ -39,6 +39,7 @@ module.exports =
         if options.ContentType is 'text/html' and @publishOptions.remove_html_extensions
           ext = path.extname options.Key
           options.Key = options.Key.replace ext, ''
+          options.CacheControl = "no-cache, must-revalidate"
 
         console.log "Saving #{local_path}"
         @client.putObject options, (err, data) ->
